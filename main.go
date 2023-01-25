@@ -14,6 +14,22 @@ func main() {
 			return
 		}
 	}
+
+	// go routine scanning paths for new files
+	// go routine per found file looking for new lines
+
+	lines := make(chan Line)
+	for _, path := range args {
+		path := path
+		go func() {
+			os.ReadFile(path)
+		}()
+	}
+}
+
+type Line struct {
+	Source string
+	Bytes  []byte
 }
 
 func help() {
